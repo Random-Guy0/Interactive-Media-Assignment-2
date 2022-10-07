@@ -48,7 +48,6 @@ class Bubble extends MoveableObject
   
   void update(float deltaTime)
   {
-    println(deltaTime);
     position.y -= speed * deltaTime;
     position.x = initialPosition.x + amplitude * sin(position.y * wavelength);
     noStroke();
