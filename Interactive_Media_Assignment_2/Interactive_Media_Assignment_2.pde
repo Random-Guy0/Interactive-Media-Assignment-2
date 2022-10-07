@@ -23,6 +23,7 @@ void fileSelected(File selection) {
   String audioFileName = selection.getAbsolutePath();
   player = new SamplePlayer(SampleManager.sample(audioFileName));
   audioPlayback(); //pops up a dialouge box to select audio, once done it runs the audioPlayback Function 
+  b = new Bubble(width / 2.0, height, 20.0, 30, color(0, 0, 255));
 }
 
 void audioPlayback() {

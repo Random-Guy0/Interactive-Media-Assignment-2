@@ -1,16 +1,17 @@
 class MoveableObject
 {
   PVector position;
+  PVector initialPosition;
   //PVector velocity;
   float speed;
   
   float deltaTime;
   
-  float lastTime = second();
+  float lastTime = millis();
   
   MoveableObject()
   {
-    this(new PVector(), 1.0f);
+    this(new PVector(), 1.0);
   }
   
   MoveableObject(float x, float y, float speed)
@@ -20,14 +21,15 @@ class MoveableObject
   
   MoveableObject(PVector position, float speed)
   {
-    this.position = position;
+    this.position = position.copy();
     this.speed = speed;
+    this.initialPosition = position.copy();
   }
   
   void update()
   {
-    deltaTime = second() - lastTime;
-    lastTime = second();
+    deltaTime = (millis() - lastTime) / 1000.0;
+    lastTime = millis();
     update(deltaTime);
   }
   
