@@ -28,7 +28,7 @@ void setup()
   bubbles = new Bubble[18];
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 18; i++) {
     bubbles[i] = new Bubble(random(width / 2.0f), height, 1, 30, color(0, 0, 255));
   }
   dataValue = data.getFloat(month + 1, 1);
@@ -75,12 +75,15 @@ void draw()
   dataValue = data.getFloat(month + 1, 1);
   roundedValue = Integer.parseInt(rounded.format(dataValue));
   for (int i = 0; i < bubbleCount; i++) {
-          bubbles[i].update();
+          bubbles[i].update(0.5);
       }
   if (roundedValue > bubbleCount) {
       for (int i = bubbleCount; i < roundedValue; i++) {
-          bubbles[i].update();
+          bubbles[i].update(0.5);
       }
+  }
+  if (bubbleCount > roundedValue) {
+      // bubble pop method
   }
   println(dataValue);
   // b.update();
