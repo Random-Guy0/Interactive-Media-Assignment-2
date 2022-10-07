@@ -2,11 +2,13 @@ Bubble b;
 
 void setup()
 {
-  size(200, 200);
-  b = new Bubble(100, 100);
+  size(400, 400);
+  b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
 }
 
 void draw()
 {
+  clear();
+  background(#ffffff);
   b.update();
 }

@@ -1,32 +1,34 @@
 class MoveableObject
 {
   PVector position;
-  PVector velocity;
+  //PVector velocity;
+  float speed;
+  
+  float deltaTime;
+  
+  float lastTime = second();
   
   MoveableObject()
   {
-    this(new PVector(), new PVector());
+    this(new PVector(), 1.0f);
   }
   
-  MoveableObject(float x, float y)
+  MoveableObject(float x, float y, float speed)
   {
-    this(new PVector(x, y), new PVector());
+    this(new PVector(x, y), speed);
   }
   
-  MoveableObject(float x, float y, PVector velocity)
-  {
-    this(new PVector(x, y), velocity);
-  }
-  
-  MoveableObject(PVector position, PVector velocity)
+  MoveableObject(PVector position, float speed)
   {
     this.position = position;
-    this.velocity = velocity;
+    this.speed = speed;
   }
   
   void update()
   {
-    update(0);
+    deltaTime = second() - lastTime;
+    lastTime = second();
+    update(deltaTime);
   }
   
   void update(float deltaTime)

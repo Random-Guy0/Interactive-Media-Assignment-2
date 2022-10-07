@@ -1,4 +1,4 @@
-//This program is largely based off the "SamplePlayer" example.
+/*//This program is largely based off the "SamplePlayer" example.
 import beads.*;
 import java.util.Arrays;
 
@@ -88,4 +88,4 @@ void keyPressed() {
 void mousePressed() {
    panVal = random(-1,1); //change the panning direction of audio playback by changing it to a randoom value [-1,1]
    println("panVal is now" + panVal);
-}
+}*/
