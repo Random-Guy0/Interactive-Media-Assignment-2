@@ -37,6 +37,7 @@ void audioPlayback() {
   player.setRate(speedControl);
   
   //Maybe add a function to crossfade to decrease the volume?
+  //delay()
   
 }
 
