@@ -4,6 +4,7 @@ class Bubble extends MoveableObject
   color bubbleColor;
   
   float waveHeight = 3;
+  boolean on = false;
   
   Bubble()
   {
@@ -47,5 +48,15 @@ class Bubble extends MoveableObject
     noStroke();
     fill(bubbleColor);
     circle(position.x, position.y, radius);
+    collision();
+  }
+  
+  void collision() {
+    if (position.y + radius/2 < height && position.y - radius/2 > 0 && position.x + radius/2 < width && position.x - radius/2 > 0) {
+      on = true;
+    }
+    if ((position.y + radius/2 > height || position.y - radius/2 < 0) && on == true) {
+      speed *= -1;
+    }
   }
 }
