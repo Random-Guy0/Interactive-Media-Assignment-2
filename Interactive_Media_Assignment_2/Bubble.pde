@@ -5,11 +5,13 @@ class Bubble extends MoveableObject
   
   float waveHeight = 3;
   boolean on = false;
+  float amplitude = 4;
+  float wavelength = 0.4;
   
   Bubble()
   {
     super();
-    this.radius = 1.0f;
+    this.radius = 1.0;
     this.bubbleColor = color(0, 0, 255);
   }
   
@@ -43,8 +45,9 @@ class Bubble extends MoveableObject
   
   void update(float deltaTime)
   {
-    position.y -= speed;
-    position.x += waveHeight * sin(position.y);
+    println(deltaTime);
+    position.y -= speed * deltaTime;
+    position.x = initialPosition.x + amplitude * sin(position.y * wavelength);
     noStroke();
     fill(bubbleColor);
     circle(position.x, position.y, radius);
