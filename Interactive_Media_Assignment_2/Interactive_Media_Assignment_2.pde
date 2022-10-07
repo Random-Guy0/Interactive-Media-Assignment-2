@@ -14,8 +14,8 @@ Gain g;
 void setup()
 {
   size(400, 400);
-  println(data.getRowCount());
   data = loadTable("C:/Users/John/Desktop/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/People CSV.csv");
+  println(data.getRowCount());
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
