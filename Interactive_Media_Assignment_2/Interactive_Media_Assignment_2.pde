@@ -8,7 +8,8 @@ SamplePlayer player;
 Envelope speedControl; 
 float gainVal; 
 float panVal = -1;
-int bubbleCount = 1; //this will be used to adjust the gain. 
+int bubbleCount = 1; //this will be used to adjust the gain.
+Table data;
 Bubble b;
 Gain g;
 
@@ -18,6 +19,8 @@ void setup()
 {
   size(400, 400);
   cp5 = new ControlP5(this);
+  data = loadTable("C:/Users/John/Desktop/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/People CSV.csv");
+  println(data.getRowCount());
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
