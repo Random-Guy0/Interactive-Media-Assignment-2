@@ -10,6 +10,9 @@ class Bubble extends MoveableObject
     super();
     this.radius = 1.0f;
     this.bubbleColor = color(0, 0, 255);
+    bubbleCount++;
+    
+    //once data is quieter, deincrement bubblecount
   }
   
   Bubble(float x, float y, float speed)
