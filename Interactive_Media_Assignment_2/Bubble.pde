@@ -7,6 +7,7 @@ class Bubble extends MoveableObject
   boolean on = false;
   float amplitude = 4;
   float wavelength = 0.4;
+  int waveDir = 1;
   
   Bubble()
   {
@@ -14,7 +15,7 @@ class Bubble extends MoveableObject
     this.radius = 1.0;
     this.bubbleColor = color(0, 0, 255);
     
-    //once data is quieter, deincrement bubblecount
+    this.waveDir = 2 * (int(random(0, 1)) - 1);
   }
   
   Bubble(float x, float y, float speed)
@@ -22,6 +23,8 @@ class Bubble extends MoveableObject
     super(x, y, speed);
     this.radius = 1.0f;
     this.bubbleColor = color(0, 0, 255);
+    
+    this.waveDir = 2 * (int(random(0, 2)) - 1);
   }
   
   Bubble(float x, float y, float speed, float radius, color bubbleColor)
@@ -29,6 +32,8 @@ class Bubble extends MoveableObject
     super(x, y, speed);
     this.radius = radius;
     this.bubbleColor = bubbleColor;
+    
+    this.waveDir = 2 * (int(random(0, 2)));
   }
   
   Bubble(PVector position, float speed, float radius, color bubbleColor)
@@ -36,6 +41,8 @@ class Bubble extends MoveableObject
     super(position, speed);
     this.radius = radius;
     this.bubbleColor = bubbleColor;
+    
+    this.waveDir = 2 * (int(random(0, 2)) - 1);
   }
   
   Bubble(float radius, color bubbleColor)
@@ -43,24 +50,21 @@ class Bubble extends MoveableObject
     super();
     this.radius = radius;
     this.bubbleColor = bubbleColor;
+    
+    this.waveDir = 2 * (int(random(0, 2)) - 1);
   }
   
   void update(float deltaTime)
   {
+    println(waveDir);
     position.y -= speed * deltaTime;
-    position.x = initialPosition.x + amplitude * sin(position.y * wavelength);
+    position.x = initialPosition.x + amplitude * sin(position.y * wavelength) * waveDir;
     noStroke();
     fill(bubbleColor);
     circle(position.x, position.y, radius);
-    collision();
   }
   
   void collision() {
-    if (position.y + radius/2 < height && position.y - radius/2 > 0 && position.x + radius/2 < width && position.x - radius/2 > 0) {
-      on = true;
-    }
-    if ((position.y + radius/2 > height || position.y - radius/2 < 0) && on == true) {
-      speed *= -1;
-    }
+    println("COLLISION!");
   }
 }

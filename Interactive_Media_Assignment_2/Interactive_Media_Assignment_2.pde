@@ -7,6 +7,7 @@ AudioContext ac;
 SamplePlayer player;
 Envelope speedControl; 
 float gainVal; 
+float gainMult = 1;
 float panVal = -1;
 Table data;
 ArrayList<Bubble> bubbles;
@@ -23,7 +24,8 @@ void setup()
   println(data.getRowCount());
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
-  bubbles.add(new Bubble(width / 2.0f, height, 10, 30, color(0, 0, 255)));
+  bubbles.add(new Bubble(width / 2.0f + 10, height, 10, 30, color(0, 0, 255)));
+  bubbles.add(new Bubble(width / 2.0f - 10, height, 10, 30, color(0, 0, 255)));
   println(bubbles.size()); //printing amount of bubbles. 
   
   cp5.addSlider("setMonth").setMin(2).setMax(8).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE);
@@ -39,7 +41,7 @@ void fileSelected(File selection) {
 
 void audioPlayback() {
   Panner p = new Panner(ac, panVal);
-  gainVal = gainVal + bubbles.size(); //volume adjusted based in bubblecount
+  gainVal = gainMult * bubbles.size(); //volume adjusted based in bubblecount
   g = new Gain(ac, 2, gainVal);
   p.addInput(player);
   g.addInput(p);  
@@ -60,9 +62,34 @@ void draw()
   clear();
   background(#ffffff);
   
+  gainVal = gainMult * bubbles.size();
+  if(g != null)
+    g.setGain(gainVal);
+  
   for(Bubble bubble : bubbles)
   {
     bubble.update();
+  }
+}
+
+void detectCollisions()
+{
+  for(int i = 0; i < bubbles.size(); i++)
+  {
+    for(int j = 0; i < bubbles.size(); j++)
+    {
+      if(i != j)
+      {
+        float distance = PVector.dist(bubbles.get(i).position, bubbles.get(j).position);
+        float collisionDistance = bubbles.get(i).radius + bubbles.get(j).radius;
+        
+        if(distance <= collisionDistance)
+        {
+          bubbles.get(i).collision();
+          break;
+        }
+      }
+    }
   }
 }
 
