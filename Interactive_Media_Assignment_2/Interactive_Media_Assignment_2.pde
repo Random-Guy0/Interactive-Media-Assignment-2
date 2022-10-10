@@ -22,8 +22,10 @@ void setup()
   cp5 = new ControlP5(this);
   data = loadTable("People CSV.csv");
   println(data.getRowCount());
-  ac = AudioContext.getDefaultContext();
-  selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
+  ac = new AudioContext();
+  sound();
+  //ac = AudioContext.getDefaultContext();
+  //selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   bubbles.add(new Bubble(width / 2.0f + 10, height, 10, 30, color(0, 0, 255)));
   bubbles.add(new Bubble(width / 2.0f - 10, height, 10, 30, color(0, 0, 255)));
   println(bubbles.size()); //printing amount of bubbles. 
@@ -33,13 +35,12 @@ void setup()
   
 }
 
-void fileSelected(File selection) {
-  String audioFileName = selection.getAbsolutePath();
-  player = new SamplePlayer(SampleManager.sample(audioFileName));
-  audioPlayback(); //pops up a dialouge box to select audio, once done it runs the audioPlayback Function 
-}
 
-void audioPlayback() {
+void sound()
+{
+  String audioFileName = ("/Users/bvcx/Documents/GitHub/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/ambientchatter.mp3"); //Mac directory
+  //String audioFileName = ("C:/NAMEHERE/Documents/GitHub/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/ambientchatter.mp3"); WINDOWS directory
+  SamplePlayer player = new SamplePlayer(ac, SampleManager.sample(audioFileName));
   Panner p = new Panner(ac, panVal);
   gainVal = gainMult * bubbles.size(); //volume adjusted based in bubblecount
   g = new Gain(ac, 2, gainVal);
@@ -50,12 +51,7 @@ void audioPlayback() {
   speedControl = new Envelope(1);
   player.setRate(speedControl);
   
-  //Maybe add a function to crossfade to decrease the volume?
-  //delay()
-  
 }
-
-
 
 void draw()
 {
