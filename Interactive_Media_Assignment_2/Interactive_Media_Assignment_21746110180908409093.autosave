@@ -8,8 +8,7 @@ SamplePlayer player;
 Envelope speedControl; 
 float gainVal; 
 float panVal = -1;
-int bubbleCount = 1; //this will be used to adjust the gain.
-Table data;
+int bubbleCount = 1; //this will be used to adjust the gain. 
 Bubble b;
 Gain g;
 
@@ -19,14 +18,12 @@ void setup()
 {
   size(400, 400);
   cp5 = new ControlP5(this);
-  data = loadTable("People CSV.csv");
-  println(data.getRowCount());
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
   println(bubbleCount); //printing amount of bubbles. 
   
-  cp5.addSlider("setMonth").setMin(1).setMax(12).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE).setTriggerEvent(Slider.RELEASED);
+  cp5.addSlider("setMonth").setMin(1).setMax(12).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE).setTriggerEvent(Slider.PRESSED);
   cp5.getController("setMonth").getCaptionLabel().align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE).setPaddingY(5).setColor(#000000);
   
 }
