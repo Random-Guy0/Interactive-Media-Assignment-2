@@ -8,25 +8,25 @@ SamplePlayer player;
 Envelope speedControl; 
 float gainVal; 
 float panVal = -1;
-int bubbleCount = 1; //this will be used to adjust the gain.
 Table data;
-Bubble b;
+ArrayList<Bubble> bubbles;
 Gain g;
 
-int month = 1;
+int month = 2;
 
 void setup()
 {
   size(400, 400);
+  bubbles = new ArrayList<Bubble>();
   cp5 = new ControlP5(this);
   data = loadTable("People CSV.csv");
   println(data.getRowCount());
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
-  b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
-  println(bubbleCount); //printing amount of bubbles. 
+  bubbles.add(new Bubble(width / 2.0f, height, 10, 30, color(0, 0, 255)));
+  println(bubbles.size()); //printing amount of bubbles. 
   
-  cp5.addSlider("setMonth").setMin(1).setMax(12).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE).setTriggerEvent(Slider.RELEASED);
+  cp5.addSlider("setMonth").setMin(2).setMax(8).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE);
   cp5.getController("setMonth").getCaptionLabel().align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE).setPaddingY(5).setColor(#000000);
   
 }
@@ -35,12 +35,11 @@ void fileSelected(File selection) {
   String audioFileName = selection.getAbsolutePath();
   player = new SamplePlayer(SampleManager.sample(audioFileName));
   audioPlayback(); //pops up a dialouge box to select audio, once done it runs the audioPlayback Function 
-  b = new Bubble(width / 2.0, height, 20.0, 30, color(0, 0, 255));
 }
 
 void audioPlayback() {
   Panner p = new Panner(ac, panVal);
-  gainVal = gainVal + bubbleCount; //volume adjusted based in bubblecount
+  gainVal = gainVal + bubbles.size(); //volume adjusted based in bubblecount
   g = new Gain(ac, 2, gainVal);
   p.addInput(player);
   g.addInput(p);  
@@ -61,7 +60,10 @@ void draw()
   clear();
   background(#ffffff);
   
-  b.update();
+  for(Bubble bubble : bubbles)
+  {
+    bubble.update();
+  }
 }
 
 void setMonth(int month)
