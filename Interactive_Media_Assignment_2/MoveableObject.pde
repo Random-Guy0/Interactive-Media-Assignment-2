@@ -8,6 +8,7 @@ class MoveableObject
   float deltaTime;
   
   float lastTime = millis();
+  float lastCollisionTime = -1;
   
   MoveableObject()
   {
@@ -34,6 +35,11 @@ class MoveableObject
   }
   
   void update(float deltaTime)
+  {
+    
+  }
+  
+  void collision()
   {
     
   }

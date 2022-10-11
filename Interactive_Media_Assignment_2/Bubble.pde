@@ -9,6 +9,8 @@ class Bubble extends MoveableObject
   float wavelength = 0.4;
   int waveDir = 1;
   
+  boolean bounced = false;
+  
   Bubble()
   {
     super();
@@ -24,7 +26,7 @@ class Bubble extends MoveableObject
     this.radius = 1.0f;
     this.bubbleColor = color(0, 0, 255);
     
-    this.waveDir = 2 * (int(random(0, 2)) - 1);
+    this.waveDir = int(2 * (int(random(0, 2)) / 0.5 - 1));
   }
   
   Bubble(float x, float y, float speed, float radius, color bubbleColor)
@@ -33,7 +35,7 @@ class Bubble extends MoveableObject
     this.radius = radius;
     this.bubbleColor = bubbleColor;
     
-    this.waveDir = 2 * (int(random(0, 2)));
+    this.waveDir = int(int(random(0, 2)) / 0.5 - 1);
   }
   
   Bubble(PVector position, float speed, float radius, color bubbleColor)
@@ -56,7 +58,12 @@ class Bubble extends MoveableObject
   
   void update(float deltaTime)
   {
-    println(waveDir);
+    if(millis() - lastCollisionTime >= 500 && bounced)
+    {
+      bounced = false;
+      amplitude /= 2;
+    }
+    
     position.y -= speed * deltaTime;
     position.x = initialPosition.x + amplitude * sin(position.y * wavelength) * waveDir;
     noStroke();
@@ -64,7 +71,14 @@ class Bubble extends MoveableObject
     circle(position.x, position.y, radius);
   }
   
-  void collision() {
-    println("COLLISION!");
+  void collision() 
+  {
+    if(!bounced)
+    {
+      bounced = true;
+      lastCollisionTime = millis();
+      waveDir *= -1;
+      amplitude *= 2.5;
+    }
   }
 }

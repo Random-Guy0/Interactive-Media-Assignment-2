@@ -66,6 +66,7 @@ void draw()
   if(g != null)
     g.setGain(gainVal);
   
+  detectCollisions();
   for(Bubble bubble : bubbles)
   {
     bubble.update();
@@ -76,14 +77,14 @@ void detectCollisions()
 {
   for(int i = 0; i < bubbles.size(); i++)
   {
-    for(int j = 0; i < bubbles.size(); j++)
+    for(int j = 0; j < bubbles.size(); j++)
     {
       if(i != j)
       {
         float distance = PVector.dist(bubbles.get(i).position, bubbles.get(j).position);
         float collisionDistance = bubbles.get(i).radius + bubbles.get(j).radius;
         
-        if(distance <= collisionDistance)
+        if(distance < collisionDistance)
         {
           bubbles.get(i).collision();
           break;
