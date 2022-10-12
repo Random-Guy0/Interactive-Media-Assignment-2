@@ -2,7 +2,7 @@ class Bubble extends MoveableObject
 {
   float radius;
   color bubbleColor;
-  
+  Bubble[] bubbles;
   float waveHeight = 3;
   boolean on = false;
   float amplitude = 4;
@@ -62,6 +62,17 @@ class Bubble extends MoveableObject
     }
     if ((position.y + radius/2 > height || position.y - radius/2 < 0) && on == true) {
       speed *= -1;
+    }
+    for (Bubble bubble : bubbles) {
+      if (bubble != this && on == true) {
+        float xValue = pow((bubble.position.x - position.x),2);
+        float yValue = pow((bubble.position.y - position.y),2);
+        float lengths = sqrt(xValue + yValue);
+        if (lengths <= (bubble.radius + radius)) {
+          bubble.speed *= -1;
+          speed *= -1;
+        }
+      }
     }
   }
 }
