@@ -2,13 +2,15 @@ import controlP5.*;
 import beads.*;
 import java.util.Arrays;
 
+float defaultSpeed = 1;
+float speedVal = defaultSpeed;
 ControlP5 cp5;
 AudioContext ac;
 SamplePlayer player;
 Envelope speedControl; 
 float gainVal; 
 float gainMult = 1;
-float panVal = -1;
+float panVal = 0;
 Table data;
 ArrayList<Bubble> bubbles;
 Gain g;
@@ -16,6 +18,10 @@ Gain g;
 int month = 2;
 int lastMonth = 2;
 boolean moveForward = true;
+
+float normalPlaybackResumeTimer = 0;
+float deltaTime = 0;
+float lastTime = millis();
 
 void setup()
 {
@@ -43,20 +49,31 @@ void sound()
   //String audioFileName = ("/Users/bvcx/Documents/GitHub/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/ambientchatter.mp3"); //Mac directory
   String audioFileName = (dataPath("ambientchatter.mp3")); //WINDOWS directory
   SamplePlayer player = new SamplePlayer(ac, SampleManager.sample(audioFileName));
-  Panner p = new Panner(ac, panVal);
+  player.setLoopType(SamplePlayer.LoopType.LOOP_FORWARDS);
   gainVal = gainMult * bubbles.size(); //volume adjusted based in bubblecount
   g = new Gain(ac, 2, gainVal);
-  p.addInput(player);
-  g.addInput(p);  
+  //p.addInput(player);
+  g.addInput(player);  
   ac.out.addInput(g);
   ac.start();
-  speedControl = new Envelope(1);
+  speedControl = new Envelope(ac, speedVal);
   player.setRate(speedControl);
   
 }
 
 void draw()
 {
+  deltaTime = (millis() - lastTime) / 1000;
+  lastTime = millis();
+  
+  normalPlaybackResumeTimer += deltaTime;
+   
+  if(normalPlaybackResumeTimer > 0.5)
+  {
+    speedVal = defaultSpeed;
+    speedControl.setValue(speedVal); 
+  }
+  
   clear();
   background(#ffffff);
   
@@ -94,11 +111,31 @@ void detectCollisions()
 
 void setMonth(int month)
 {
+  lastMonth = this.month;
   this.month = month;
   
   setMonthLabel(month);
   
   moveForward = month >= lastMonth;
+  if (month > lastMonth)
+  { //play this speed when going up a month
+    println("speeding up");
+    
+    speedVal = 2 * defaultSpeed;
+    speedControl.setValue(speedVal);
+    normalPlaybackResumeTimer = 0;
+
+  }
+  else if (month < lastMonth)
+  { //reverse audio playuback when going DOWN a month
+  println("reversing");
+    speedVal = -defaultSpeed;
+    speedControl.setValue(speedVal);
+    normalPlaybackResumeTimer = 0;
+    
+  }
+  
+  
 }
 
 void setMonthLabel(int currentMonth)
