@@ -9,7 +9,7 @@ class Bubble extends MoveableObject
   float wavelength = 0.4;
   int waveDir = 1;
   
-  boolean bounced = false;
+  boolean popped = false;
   
   Bubble()
   {
@@ -58,27 +58,10 @@ class Bubble extends MoveableObject
   
   void update(float deltaTime)
   {
-    if(millis() - lastCollisionTime >= 500 && bounced)
-    {
-      bounced = false;
-      amplitude /= 2;
-    }
-    
     position.y -= speed * deltaTime;
     position.x = initialPosition.x + amplitude * sin(position.y * wavelength) * waveDir;
     noStroke();
     fill(bubbleColor);
     circle(position.x, position.y, radius);
-  }
-  
-  void collision() 
-  {
-    if(!bounced)
-    {
-      bounced = true;
-      lastCollisionTime = millis();
-      waveDir *= -1;
-      amplitude *= 2.5;
-    }
   }
 }

@@ -28,7 +28,7 @@ void setup()
   sound();
   //ac = AudioContext.getDefaultContext();
   //selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
-  bubbles.add(new Bubble(width / 2.0f + 10, height, 10, 30, color(0, 0, 255)));
+  bubbles.add(new Bubble(0, height, 10, 30, color(0, 0, 255)));
   bubbles.add(new Bubble(width / 2.0f - 10, height, 10, 30, color(0, 0, 255)));
   println(bubbles.size()); //printing amount of bubbles. 
   
