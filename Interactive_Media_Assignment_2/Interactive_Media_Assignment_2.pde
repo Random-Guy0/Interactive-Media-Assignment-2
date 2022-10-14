@@ -14,6 +14,8 @@ ArrayList<Bubble> bubbles;
 Gain g;
 
 int month = 2;
+int lastMonth = 2;
+boolean moveForward = true;
 
 void setup()
 {
@@ -39,7 +41,7 @@ void setup()
 void sound()
 {
   //String audioFileName = ("/Users/bvcx/Documents/GitHub/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/ambientchatter.mp3"); //Mac directory
-  String audioFileName = ("./ambientchatter.mp3"); WINDOWS directory
+  String audioFileName = (dataPath("ambientchatter.mp3")); //WINDOWS directory
   SamplePlayer player = new SamplePlayer(ac, SampleManager.sample(audioFileName));
   Panner p = new Panner(ac, panVal);
   gainVal = gainMult * bubbles.size(); //volume adjusted based in bubblecount
@@ -95,6 +97,8 @@ void setMonth(int month)
   this.month = month;
   
   setMonthLabel(month);
+  
+  moveForward = month >= lastMonth;
 }
 
 void setMonthLabel(int currentMonth)
