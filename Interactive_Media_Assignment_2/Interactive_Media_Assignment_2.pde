@@ -73,7 +73,7 @@ void draw()
   dataValue = data.getFloat(month + 1, 1);
   bubbleCount = (int)Math.round(dataValue);
   temp = data.getFloat(month + 1, 3);
-  for (int i = 0; i < balls.length; i++) {
+  for (int i = 0; i < prevBubbleCount; i++) {
    if (20 < temp && temp < 30) {
       balls[i].colour = color(255,0,0);
     } else if (10 < temp && temp < 20) {
@@ -82,35 +82,23 @@ void draw()
       balls[i].colour = color(255,215,0);
     }
   }
-  if (bubbleCount < prevBubbleCount) {
-    for (int i = balls.length; i > bubbleCount; i--) {
-      balls[i] = null;
-    }
-    prevBubbleCount = bubbleCount;
-  }
-  if (bubbleCount > prevBubbleCount) {
-   for (int i = prevBubbleCount; i < bubbleCount; i++) {
-     for (int j = prevBubbleCount; j < bubbleCount; j++) {
-        balls[i].update();
-        balls[i].display();
-        balls[i].checkBoundaryCollision();
-        if (i != j) {
-          balls[i].checkCollision(balls[j]);
-        }
-      }
-    }
-    prevBubbleCount = bubbleCount;
-  }
+  println("PrevBubbleCount " + prevBubbleCount);
+  println("BubbleCount " + bubbleCount);
+  prevBubbleCount = bubbleCount;
     for (int i = 0; i < prevBubbleCount; i++) {
      for (int j = 0; j < prevBubbleCount; j++) {
-        balls[i].update();
-        balls[i].display();
-        balls[i].checkBoundaryCollision();
-        if (i != j) {
-          balls[i].checkCollision(balls[j]);
+        if (balls[i] != null && balls[j] != null) {
+          balls[i].update();
+          balls[i].display();
+          balls[i].checkBoundaryCollision();
+          if (i != j) {
+            balls[i].checkCollision(balls[j]);
+          }
         }
       }
     }
+  println("PrevBubbleCount " + prevBubbleCount);
+  println("BubbleCount " + bubbleCount);
 }
 
 void setMonth(int month)
