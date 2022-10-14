@@ -108,6 +108,10 @@ void draw()
     }
   println("PrevBubbleCount " + prevBubbleCount);
   println("BubbleCount " + bubbleCount);
+  fill(0);
+  textSize(15);
+  text("Pick the Month:", 10, 70);
+  text("(Feb = 1 through to Aug = 7)", 10, 90);
 }
 
 void mouseClicked() {
