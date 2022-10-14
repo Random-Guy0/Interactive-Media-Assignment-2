@@ -10,38 +10,33 @@ Envelope speedControl;
 float gainVal; 
 float panVal = -1;
 int bubbleCount = 1; //this will be used to adjust the gain.
-Bubble[] bubbles;
+Ball[] balls;
 Table data;
 float dataValue;
 DecimalFormat rounded = new DecimalFormat("#");
-int roundedValue;
-Bubble b;
+int prevBubbleCount;
+float temp;
+int tempRound;
 Gain g;
-
+PVector[] starting = {new PVector(0, random(400)), new PVector(400, random(400)), new PVector(random(400), 0), new PVector(random(400), 400)};
 int month = 1;
 
 void setup()
 {
   size(400, 400);
+  background(150);
   cp5 = new ControlP5(this);
   data = loadTable("C:/Users/John/Desktop/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/People CSV.csv");
-  bubbles = new Bubble[18];
+  println(data);
+  balls = new Ball[18];
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   for (int i = 0; i < 18; i++) {
-    bubbles[i] = new Bubble(random(30, width - 30), height, 1, 30, color(0, 0, 255));
-  }
-  for (int i = 0; i < 18; i++) {
-    bubbles[i].bubbles = bubbles;
+    balls[i] = new Ball(random(400), random(400), 10.0f);
   }
   dataValue = data.getFloat(month + 1, 1);
-  roundedValue = Integer.parseInt(rounded.format(dataValue));
-  bubbleCount = roundedValue;
-  println(roundedValue);
-  // b = new Bubble(width / 2.0f, height, 1, 30, color(0, 0, 255));
-  println(bubbleCount); //printing amount of bubbles. 
-  
-  cp5.addSlider("setMonth").setMin(1).setMax(12).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE).setTriggerEvent(Slider.RELEASED);
+  prevBubbleCount = (int)Math.round(dataValue);
+  cp5.addSlider("setMonth").setMin(1).setMax(7).setValue(month).setPosition(10, 20).setSize(200, 30).setCaptionLabel("Month").setSliderMode(Slider.FLEXIBLE).setTriggerEvent(Slider.RELEASED);
   cp5.getController("setMonth").getCaptionLabel().align(ControlP5.LEFT, ControlP5.TOP_OUTSIDE).setPaddingY(5).setColor(#000000);
   
 }
@@ -74,23 +69,48 @@ void audioPlayback() {
 void draw()
 {
   clear();
-  background(#ffffff);
+  background(200);
   dataValue = data.getFloat(month + 1, 1);
-  roundedValue = Integer.parseInt(rounded.format(dataValue));
-  for (int i = 0; i < bubbleCount; i++) {
-          bubbles[i].update(0.5);
-      }
-  if (roundedValue > bubbleCount) {
-      for (int i = bubbleCount; i < roundedValue; i++) {
-          bubbles[i].update(0.5);
-      }
+  bubbleCount = (int)Math.round(dataValue);
+  temp = data.getFloat(month + 1, 3);
+  for (int i = 0; i < balls.length; i++) {
+   if (20 < temp && temp < 30) {
+      balls[i].colour = color(255,0,0);
+    } else if (10 < temp && temp < 20) {
+      balls[i].colour = color(255,165,0);
+    } else if (0 < temp && temp < 10) {
+      balls[i].colour = color(255,215,0);
+    }
   }
-  if (bubbleCount > roundedValue) {
-      // bubble pop method
+  if (bubbleCount < prevBubbleCount) {
+    for (int i = balls.length; i > bubbleCount; i--) {
+      balls[i] = null;
+    }
+    prevBubbleCount = bubbleCount;
   }
-  println(dataValue);
-  // b.update();
-  
+  if (bubbleCount > prevBubbleCount) {
+   for (int i = prevBubbleCount; i < bubbleCount; i++) {
+     for (int j = prevBubbleCount; j < bubbleCount; j++) {
+        balls[i].update();
+        balls[i].display();
+        balls[i].checkBoundaryCollision();
+        if (i != j) {
+          balls[i].checkCollision(balls[j]);
+        }
+      }
+    }
+    prevBubbleCount = bubbleCount;
+  }
+    for (int i = 0; i < prevBubbleCount; i++) {
+     for (int j = 0; j < prevBubbleCount; j++) {
+        balls[i].update();
+        balls[i].display();
+        balls[i].checkBoundaryCollision();
+        if (i != j) {
+          balls[i].checkCollision(balls[j]);
+        }
+      }
+    }
 }
 
 void setMonth(int month)
@@ -107,40 +127,25 @@ void setMonthLabel(int currentMonth)
   switch(currentMonth)
   {
     case 1:
-      valueLabel.setText("January");
-      break;
-    case 2:
       valueLabel.setText("February");
       break;
-    case 3:
+    case 2:
       valueLabel.setText("March");
       break;
-    case 4:
+    case 3:
       valueLabel.setText("April");
       break;
-    case 5:
+    case 4:
       valueLabel.setText("May");
       break;
-    case 6:
+    case 5:
       valueLabel.setText("June");
       break;
-    case 7:
+    case 6:
       valueLabel.setText("July");
       break;
-    case 8:
+    case 7:
       valueLabel.setText("August");
-      break;
-    case 9:
-      valueLabel.setText("September");
-      break;
-    case 10:
-      valueLabel.setText("October");
-      break;
-    case 11:
-      valueLabel.setText("November");
-      break;
-    case 12:
-      valueLabel.setText("December");
       break;
   }
 }
