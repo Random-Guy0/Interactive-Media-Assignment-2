@@ -32,7 +32,7 @@ void setup()
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   for (int i = 0; i < 18; i++) {
-    balls[i] = new Ball(random(400), random(400), 10.0f);
+    balls[i] = new Ball(random(400), random(400), 30.0f);
   }
   dataValue = data.getFloat(month + 1, 1);
   prevBubbleCount = (int)Math.round(dataValue);
@@ -91,6 +91,7 @@ void draw()
           balls[i].update();
           balls[i].display();
           balls[i].checkBoundaryCollision();
+          balls[i].checkClickCollision();
           if (i != j) {
             balls[i].checkCollision(balls[j]);
           }
@@ -99,6 +100,12 @@ void draw()
     }
   println("PrevBubbleCount " + prevBubbleCount);
   println("BubbleCount " + bubbleCount);
+}
+
+void mouseClicked() {
+  for (int i = 0; i < prevBubbleCount; i++) {
+        balls[i].checkClickCollision();
+      }
 }
 
 void setMonth(int month)
