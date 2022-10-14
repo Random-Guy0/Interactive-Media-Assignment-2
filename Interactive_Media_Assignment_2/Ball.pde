@@ -6,7 +6,7 @@ class Ball {
 
   Ball(float x, float y, float r_) {
     position = new PVector(x, y);
-    velocity = new PVector(0.6f,0.6f);
+    velocity = new PVector(0.3f,0.3f);
     radius = r_;
     m = radius*.1;
     colour = color(0,0,255);

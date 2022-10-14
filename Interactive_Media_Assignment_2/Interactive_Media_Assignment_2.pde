@@ -6,19 +6,18 @@ import java.text.DecimalFormat;
 ControlP5 cp5;
 AudioContext ac;
 SamplePlayer player;
-Envelope speedControl; 
+Envelope speedControl;
+Gain g; 
 float gainVal; 
 float panVal = -1;
 int bubbleCount = 1; //this will be used to adjust the gain.
 Ball[] balls;
+Circle[] circles;
 Table data;
 float dataValue;
 DecimalFormat rounded = new DecimalFormat("#");
 int prevBubbleCount;
 float temp;
-int tempRound;
-Gain g;
-PVector[] starting = {new PVector(0, random(400)), new PVector(400, random(400)), new PVector(random(400), 0), new PVector(random(400), 400)};
 int month = 1;
 
 void setup()
@@ -28,11 +27,15 @@ void setup()
   cp5 = new ControlP5(this);
   data = loadTable("C:/Users/John/Desktop/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/People CSV.csv");
   println(data);
-  balls = new Ball[18];
+  balls = new Ball[9];
+  circles = new Circle[5];
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
-  for (int i = 0; i < 18; i++) {
+  for (int i = 0; i < 9; i++) {
     balls[i] = new Ball(random(400), random(400), 30.0f);
+  }
+  for (int i = 0; i < 5; i++) {
+    circles[i] = new Circle(random(800), random(800), 150.0f);
   }
   dataValue = data.getFloat(month + 1, 1);
   prevBubbleCount = (int)Math.round(dataValue);
@@ -70,6 +73,11 @@ void draw()
 {
   clear();
   background(200);
+  for (int i = 0; i < circles.length; i++) {
+     circles[i].update();
+     circles[i].display();
+     circles[i].checkBoundaryCollision();
+  }
   dataValue = data.getFloat(month + 1, 1);
   bubbleCount = (int)Math.round(dataValue);
   temp = data.getFloat(month + 1, 3);
@@ -77,7 +85,7 @@ void draw()
    if (20 < temp && temp < 30) {
       balls[i].colour = color(255,0,0);
     } else if (10 < temp && temp < 20) {
-      balls[i].colour = color(255,165,0);
+      balls[i].colour = color(255,150,0);
     } else if (0 < temp && temp < 10) {
       balls[i].colour = color(255,215,0);
     }
