@@ -12,7 +12,6 @@ Envelope speedControl;
 float gainVal; 
 float gainMult = 1;
 float panVal = 0;
-Table data;
 ArrayList<Bubble> bubbles;
 Gain g;
 int bubbleCount = 1; //this will be used to adjust the gain.
@@ -26,7 +25,7 @@ float temp;
 int month = 1;
 float randVelocity;
 
-int month = 2;
+
 int lastMonth = 2;
 boolean moveForward = true;
 
