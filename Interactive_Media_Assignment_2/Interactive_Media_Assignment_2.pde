@@ -19,11 +19,13 @@ DecimalFormat rounded = new DecimalFormat("#");
 int prevBubbleCount;
 float temp;
 int month = 1;
+float randVelocity;
 
 void setup()
 {
-  size(400, 400);
+  size(600, 600);
   background(150);
+  randVelocity = random(-0.3f, 0.3f);
   cp5 = new ControlP5(this);
   data = loadTable("C:/Users/John/Desktop/Interactive-Media-Assignment-2/Interactive_Media_Assignment_2/People CSV.csv");
   println(data);
@@ -32,7 +34,7 @@ void setup()
   ac = AudioContext.getDefaultContext();
   selectInput("Select your audio file: ", "fileSelected"); //selecting chatter audiofile
   for (int i = 0; i < 9; i++) {
-    balls[i] = new Ball(random(400), random(400), 30.0f);
+    balls[i] = new Ball(random(400), random(400), 25.0f);
   }
   for (int i = 0; i < 5; i++) {
     circles[i] = new Circle(random(800), random(800), 150.0f);
@@ -95,28 +97,44 @@ void draw()
   prevBubbleCount = bubbleCount;
     for (int i = 0; i < prevBubbleCount; i++) {
      for (int j = 0; j < prevBubbleCount; j++) {
-        if (balls[i] != null && balls[j] != null) {
           balls[i].update();
           balls[i].display();
           balls[i].checkBoundaryCollision();
-          balls[i].checkClickCollision();
-          if (i != j) {
-            balls[i].checkCollision(balls[j]);
-          }
+          balls[i].checkCollision(balls[j]);
         }
       }
-    }
   println("PrevBubbleCount " + prevBubbleCount);
   println("BubbleCount " + bubbleCount);
   fill(0);
   textSize(15);
   text("Pick the Month:", 10, 70);
   text("(Feb = 1 through to Aug = 7)", 10, 90);
+  text("How Hot Is It?  (degrees Celcius)", 10, 130);
+  text("(Red: 20 - 30)", 10, 150);
+  text("(Orange: 10 - 20)", 10, 170);
+  text("(Yellow: 0 - 10)", 10, 190);
+  text("Hold Enter to Freeze", 10, 250);
+  text("Press Any Key to Reverse Speed", 10, 230);
+  textSize(20);
+  text("Number of People Passing Through Building 11", 70, 570);
 }
 
-void mouseClicked() {
+void keyPressed() {
+  if (keyCode == ENTER) {
+    for (int i = 0; i < prevBubbleCount; i++) {
+        balls[i].velocity.x = 0;
+        balls[i].velocity.y = 0;
+      }
+  }
   for (int i = 0; i < prevBubbleCount; i++) {
-        balls[i].checkClickCollision();
+        balls[i].changeSpeed();
+      }
+}
+
+void keyReleased() {
+  for (int i = 0; i < prevBubbleCount; i++) {
+        balls[i].velocity.x = random(-0.2f, 0.2f);
+        balls[i].velocity.y = random(-0.2f, 0.2f);
       }
 }
 

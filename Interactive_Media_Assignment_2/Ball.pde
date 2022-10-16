@@ -6,7 +6,7 @@ class Ball {
 
   Ball(float x, float y, float r_) {
     position = new PVector(x, y);
-    velocity = new PVector(0.3f,0.3f);
+    velocity = new PVector(0.2f,0.2f);
     radius = r_;
     m = radius*.1;
     colour = color(0,0,255);
@@ -32,11 +32,9 @@ class Ball {
     }
   }
   
-  void checkClickCollision() {
-    if (mouseX > position.x - (radius + 30) && mouseX < position.x + (radius + 30) && mouseY > position.y - (radius + 30) && mouseY < position.y + (radius + 30)) {
-      velocity.x *= -1.0;
-      velocity.y *= -1.0;
-    }
+  void changeSpeed() {
+    velocity.x *= -1.0;
+    velocity.y *= -1.0;
   }
 
   void checkCollision(Ball other) {
